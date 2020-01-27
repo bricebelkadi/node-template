@@ -20,7 +20,7 @@ export class Playlist {
     @ManyToMany(type => User, user => user.playlists)
     users?: User[];
 
-    @ManyToMany(type => User, user => user.favorites)
+    @ManyToMany(type => User, user => user.favorites,  {cascade: true})
     @JoinTable()
     favoriters?: User[];
 }

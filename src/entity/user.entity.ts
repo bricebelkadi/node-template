@@ -19,7 +19,7 @@ export class User {
     @Column({type: 'varchar', length: 255, nullable: false})
     password!: string;
 
-    @ManyToMany(type => Playlist, playlist => playlist.users)
+    @ManyToMany(type => Playlist, playlist => playlist.users, {cascade: true})
     @JoinTable()
     playlists?: Playlist[];
 

@@ -19,9 +19,7 @@ export class Track {
     @Column({type: 'varchar', length: 128, nullable: true})
     youtube_url!: string;
 
-    @ManyToMany(type => Playlist, playlist => playlist.tracks, {
-        cascade: true,
-    })
+    @ManyToMany(type => Playlist, playlist => playlist.tracks, {cascade: true})
     @JoinTable()
     playlists?: Playlist[];
 }

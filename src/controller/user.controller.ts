@@ -20,6 +20,13 @@ export const UserController = (app: Application) => {
     userRouter.post('/', async (req: Request, res: Response) => {
         const user = req.body;
         res.send(await userService.insert(user));
+    });
+
+    userRouter.put('/favorite/:id', async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        const user = req.body;
+        console.log(user);
+        res.send(await userService.toggleFavoriteTrack(id, user));
     })
 
     app.use('/user', userRouter);
