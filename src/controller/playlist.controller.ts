@@ -10,29 +10,48 @@ import { PlaylistService } from '../services/playlist.service';
  */
 export const PlaylistController = (app: Application) => {
 
-    const userRouter: Router = express.Router();
+    const playlistRouter: Router = express.Router();
     const playlistservice = new PlaylistService();
 
     // GET routes --------------------------------------------------------
-    userRouter.get('/', async (req: Request, res: Response) => {
-        res.send(await playlistservice.getAll());
+    playlistRouter.get('/', async (req: Request, res: Response) => {
+        const title = req.query.title;
+        console.log(title);
+        const genre = req.query.genre;
+        console.log(genre);
+        res.send(await playlistservice.getAll(title, genre));
     });
 
-    userRouter.get('/:id', async (req: Request, res: Response) => {
+    playlistRouter.get('/:id', async (req: Request, res: Response) => {
         const id = parseInt(req.params.id, 10);
         res.send(await playlistservice.getOne(id));
-    })
+    });
+
+    playlistRouter.get('')
 
     // POST-PUT routes ---------------------------------------------------
-    userRouter.post('/', async (req: Request, res: Response) => {
+    playlistRouter.post('/', async (req: Request, res: Response) => {
         const playlist = req.body;
         res.send(await playlistservice.insert(playlist));
-    })
+    });
 
-    userRouter.put('/', async (req: Request, res: Response) => {
+    playlistRouter.put('/:id', async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
         const playlist = req.body;
-        res.send(await playlistservice.modify(playlist))
+        res.send(await playlistservice.modify(id, playlist));
+    });
+
+
+    // DELETE routes -----------------------------------------------------
+    playlistRouter.delete('/:id', async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        try {
+            await playlistservice.suppress(id);
+            res.send('Playlist deleted correctly !').status(204);
+        } catch (error) {
+            res.send(error).status(400);
+        }
     })
 
-    app.use('/track', userRouter);
+    app.use('/playlist', playlistRouter);
 };

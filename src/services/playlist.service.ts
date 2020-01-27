@@ -10,22 +10,34 @@ export class PlaylistService {
 
     private repository = getCustomRepository(PlaylistRepository);
 
-    // Business logic
-    async getAll() {
-        return await this.repository.find();
+    // GET functions ----------------------------------------------------
+    async getAll(title: string, genre: string) {
+        const where: any = [];
+        const option: any = {};
+        if (title !== undefined) { where.push({ title }); }
+        if (genre !== undefined) { where.push({ genre }); }
+        if (where.length > 0) { option.where = where; }
+        return await this.repository.find(option);
     }
 
     async getOne(id: number) {
         return await this.repository.findOne(id)
     }
 
+    // POST-PUT functions -----------------------------------------------
     async insert(playlist: any) {
         await this.repository.create(playlist);
         return await this.repository.save(playlist);
     }
 
-    async modify(playlist: any) {
-        return await this.repository.save(playlist)
+    async modify(id: number, playlist: any) {
+        await this.repository.update(id, playlist);
+        return await this.repository.findOne(id);
     }
 
+
+    // DELETE functions -------------------------------------------------
+    async suppress(id: number) {
+        return await this.repository.delete(id);
+    }
 }
