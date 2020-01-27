@@ -1,5 +1,7 @@
 import { createConnection } from 'typeorm';
 import { User } from '../entity/user.entity';
+import { Playlist } from '../entity/playlist.entity';
+import { Track } from '../entity/track.entity';
 
 export default async () => {
 
@@ -12,6 +14,8 @@ await createConnection({
     database: process.env.TEMPLATE_DB,
     entities: [
         User,
+        Playlist,
+        Track,
     ],
     synchronize: true,
 });
