@@ -16,9 +16,7 @@ export const PlaylistController = (app: Application) => {
     // GET routes --------------------------------------------------------
     playlistRouter.get('/', async (req: Request, res: Response) => {
         const title = req.query.title;
-        console.log(title);
         const genre = req.query.genre;
-        console.log(genre);
         res.send(await playlistservice.getAll(title, genre));
     });
 
@@ -27,7 +25,6 @@ export const PlaylistController = (app: Application) => {
         res.send(await playlistservice.getOne(id));
     });
 
-    playlistRouter.get('')
 
     // POST-PUT routes ---------------------------------------------------
     playlistRouter.post('/', async (req: Request, res: Response) => {
@@ -51,7 +48,7 @@ export const PlaylistController = (app: Application) => {
         } catch (error) {
             res.send(error).status(400);
         }
-    })
+    });
 
     app.use('/playlist', playlistRouter);
 };
